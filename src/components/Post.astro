@@ -41,7 +41,7 @@ const post = Astro.props as PostProps;
   </section>
 </article>
 <!-- Script para manejar los likes PRIMER INTENTO, FUNCIONABA-->
-<!-- <script type="module" is="module">
+ <script type="module" is="module">
   async function updateLikes(postId) {
     const BASE_URL = 'https://astrobloggastro-default-rtdb.europe-west1.firebasedatabase.app';
     
@@ -104,7 +104,7 @@ const post = Astro.props as PostProps;
       }
     }
   });
-</script> -->
+</script>
 
 <!-- Script para manejar los likes NO FUNCIONA-->
 <!-- <script type="module">
@@ -131,7 +131,7 @@ const post = Astro.props as PostProps;
 </script> -->
 
 <!-- Script para manejar los likes -->
-<script type="module">
+<!-- <script type="module">
   import { updateLikes } from './likesupdates.js';
 
   // Escuchar clics en botones de likes
@@ -158,4 +158,4 @@ const post = Astro.props as PostProps;
       console.error('No se pudo actualizar el contador de likes.');
     }
   });
-</script>
+</script> -->
