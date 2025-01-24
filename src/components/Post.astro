@@ -40,7 +40,7 @@ const post = Astro.props as PostProps;
     <p class="text-gray-600 justify-end">Sección: {post.section}</p>
   </section>
 </article>
-<!-- Script para manejar los likes PRIMER INTENTO, FUNCIONABA-->
+<!-- Script para manejar los likes POR AHORA LO DEJO HASTA QUE HAGA EL COMPONENTE REACT PARA LOS LIKES-->
  <script type="module" is="module">
   async function updateLikes(postId) {
     const BASE_URL = 'https://astrobloggastro-default-rtdb.europe-west1.firebasedatabase.app';
@@ -105,57 +105,3 @@ const post = Astro.props as PostProps;
     }
   });
 </script>
-
-<!-- Script para manejar los likes NO FUNCIONA-->
-<!-- <script type="module">
-  import { updateLikes } from './likesupdates.js';
-
-  // Escuchar clics en botones de likes
-  document.addEventListener('click', async (e) => {
-    const target = e.target.closest('button[id^="like-btn-"]');
-    if (!target) return;
-
-    const postId = target.dataset.postId;
-    if (!postId) return;
-
-    // Actualizar likes en Firebase
-    const updatedLikes = await updateLikes(postId);
-    if (updatedLikes !== null) {
-      // Actualizar el contador en la interfaz
-      const likeCountSpan = document.getElementById(`like-count-${postId}`);
-      if (likeCountSpan) {
-        likeCountSpan.textContent = updatedLikes;
-      }
-    }
-  });
-</script> -->
-
-<!-- Script para manejar los likes -->
-<!-- <script type="module">
-  import { updateLikes } from './likesupdates.js';
-
-  // Escuchar clics en botones de likes
-  document.addEventListener('click', async (e) => {
-    const target = e.target.closest('button[id^="like-btn-"]');
-    if (!target) return;
-
-    const postId = target.dataset.postId;
-    if (!postId) return;
-
-    console.log(`Botón de like clickeado para postId: ${postId}`);
-
-    // Actualizar likes en Firebase
-    const updatedLikes = await updateLikes(postId);
-    console.log(`Likes actualizados: ${updatedLikes}`);
-
-    if (updatedLikes !== null) {
-      // Actualizar el contador en la interfaz
-      const likeCountSpan = document.getElementById(`like-count-${postId}`);
-      if (likeCountSpan) {
-        likeCountSpan.textContent = updatedLikes;
-      }
-    } else {
-      console.error('No se pudo actualizar el contador de likes.');
-    }
-  });
-</script> -->
