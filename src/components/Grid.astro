@@ -1,0 +1,83 @@
+---
+import Card from './Card.astro';
+
+// Interfaz del "post" de la base de datos
+interface Post {
+  id: string;
+  slug: string;
+  image: string;
+  title: string;
+  description: string;
+  content: string;
+  author: string;
+  date: string;
+  likes: number;
+  section: string;
+}
+
+// Props que vienen de fuera
+interface Props {
+  data: Post[];
+}
+
+const { data } = Astro.props;
+console.log(data);
+---
+
+<!--div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+  {data.map((post) => (
+    <Card
+      key={post.id}              // clave única
+      image={post.image}
+      title={post.title}
+      description={post.description}
+    />
+  ))}
+</div-->
+
+<div class="columns-2 md:columns-4 gap-4">
+    {data.map((post) => (
+      <div class="mb-4 break-inside-avoid-column">
+        <Card
+          image={post.image}
+          title={post.title}
+          description={post.description}
+          slug={post.slug} 
+        />
+      </div>
+    ))}
+  </div>
+
+  <!--div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+    {data.map((post, index) => (
+      <Card
+        key={post.id}
+        class={`
+          ${index % 5 === 0 ? 'md:col-span-2 md:row-span-2' : ''}
+        `}
+        image={post.image}
+        title={post.title}
+        description={post.description}
+      />
+    ))}
+  </div>
+
+  <!--div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+  {data.map((post, index) => {
+    const isLarge = index % 5 === 0;
+    return (
+      <div
+        class={`
+          ${isLarge ? 'md:col-span-2 md:row-span-2' : ''}
+        `}
+      >
+        <Card
+          key={post.id}
+          image={post.image}
+          title={post.title}
+          description={post.description}
+        />
+      </div>
+    );
+  })}
+</div-->

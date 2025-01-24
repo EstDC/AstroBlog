@@ -1,0 +1,41 @@
+---
+import { fetchPosts } from '../utils/firebase';
+const posts = await fetchPosts();
+
+// Obtener secciones únicas para el menú
+const uniqueSections = Array.from(new Set(posts.map(p => p.section)));
+---
+<ul class="w-11/12 flex justify-evenly items-center bg-transparent h-24">
+  <li class="relative group">
+    <a href={`/`}>
+      <img src="/img/hogarwhite.png" alt="Home" class="w-14 h-14  object-contain">
+    </a>
+    <span class="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+      Home
+    </span>
+  </li>
+  <li class="relative group">
+    <a href={`/sections/Comidas`}>
+      <img src="/img/saladwhite.png" alt="Comidas" class="w-14 h-14  object-contain">
+    </a>
+    <span class="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+      Comidas
+    </span>
+  </li>
+  <li class="relative group">
+    <a href={`/sections/Postres`}>
+      <img src="/img/cakewhite.png" alt="Postres" class="w-14 h-14  object-contain">
+    </a>
+    <span class="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+      Postres
+    </span>
+  </li>
+  <li class="relative group">
+    <a href={`/sections/Bebidas`}>
+      <img src="/img/smoothiewhite.png" alt="Bebidas" class="w-14 h-14 object-contain">
+    </a>
+    <span class="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+      Bebidas
+    </span>
+  </li>
+</ul>

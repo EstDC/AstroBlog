@@ -1,0 +1,25 @@
+---
+// Card
+interface CardProps {
+  image: string;
+  title: string;
+  description: string;
+  slug: string;
+}
+
+const { image, title, description, slug } = Astro.props;
+console.log(image, title, description);
+---
+<div class="bg-white rounded-lg shadow-md overflow-hidden">
+  <img
+    src={image}
+    alt={title}
+    data-image-url={image}
+    class="cursor-pointer h-auto w-full object-cover object-center
+    /*cursor-pointer y data-image los uso para agrandar la imagen usando mi componente de react*/"
+  />
+  <div class="p-4">
+    <h2 class="text-3xl font-simplicity font-extrabold"><a href={`/blog/${slug}`}>{title}</a></h2>    
+      <p class="text-sm text-gray-700 font-Helvetica">{description}</p>
+  </div>
+</div>

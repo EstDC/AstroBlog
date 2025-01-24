@@ -1,0 +1,51 @@
+---
+
+title: "Título del Blog"
+date: "2025-01-23"
+
+//He creado la carpeta blog para evitar posibles problemas futuros con otras rutas de [slug] que pudieran llamarse igual. 
+// Ej: tener un about en pages y un slug llamado about, daría problemas
+import { fetchPosts } from '../../utils/firebase';
+import Post from '../../components/Post.astro';
+import Header from '../../components/Header.astro';
+
+// 1. Generar rutas estáticas
+export async function getStaticPaths() {
+  const posts = await fetchPosts();
+  // Mapeamos cada post -> { params: { slug: post.slug } }
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
+
+// 2. Obtener el slug y buscar el post
+const { slug } = Astro.params;
+const postsData = await fetchPosts();
+const currentPost = postsData.find((p) => p.slug === slug);
+
+if (!currentPost) {
+  throw new Error(`No existe ningún post con el slug: "${slug}"`);
+}
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>{currentPost.title}</title>
+  </head>
+  <body class="overflow-hidden">
+    <main class="relative min-h-screen bg-cover bg-center bg-fixed" style="background-image: url('/img/fondo3.jpg');">
+      <Header postsData={postsData}/>
+      <section id="scrollable-section" class="absolute top-0 right-0 w-[58%] h-screen overflow-y-auto pr-14" >
+        <!-- Componente contenido del post -->
+        <Post {...currentPost} />
+      </section>
+      <button id="back-to-top" class="fixed bottom-10 right-14 p-4 transition-all duration-300 opacity-0 translate-y-2 invisible animate-bounce" aria-label="Back to top">
+        <img src="/img/arrow-upRed.png" alt="Flecha subir" class="w-14 h-14"/>
+      </button>
+    </main>
+    <script type="module" src="/backToTop.js"></script>
+    <script type="module" src="/updateLikes.js"></script>
+  </body>
+</html>

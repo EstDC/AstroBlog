@@ -1,0 +1,58 @@
+---
+title: "Título de la Sección"
+description: "Descripción breve de esta sección"
+
+import { fetchPosts } from '../../utils/firebase';
+import Grid from '../../components/Grid.astro';
+import Header from '../../components/Header.astro';
+import LightboxManager from '../../components/LightboxManager.jsx';//Componente que maneja los modales
+
+
+// Generar rutas estáticas para cada sección
+
+export async function getStaticPaths() {
+  const posts = await fetchPosts();
+  console.log('Posts en getStaticPaths:', posts);
+  const uniqueSections = Array.from(
+    new Set(posts.map((p) => p.section))
+  );
+  return uniqueSections.map((section) => ({
+    params: { section },
+  }));
+}
+
+const { section } = Astro.params;
+const allPosts = await fetchPosts();
+const filteredPosts = allPosts.filter((p) => p.section === section);
+
+if (!filteredPosts.length) {
+  // Manejo de error o mostrar un mensaje
+  throw new Error(`No existen posts para la sección "${section}"`);
+}
+
+const postsData = await fetchPosts();
+---
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Sección: {section}</title>
+  </head>
+  <body class="overflow-hidden">
+    <main class="relative min-h-screen bg-cover bg-center bg-fixed" style="background-image: url('/img/fondo3.jpg');">
+      <Header postsData={postsData} />
+      <section id="scrollable-section" class="absolute top-0 right-0 w-[58%] h-screen overflow-y-auto pr-14">
+        <h1 class="text-8xl mt-8 mb-10 font-mallows text-end">
+          <span class="text-white">Sección:</span>
+          <span class="text-amber-300">{section}</span>
+        </h1>
+        <Grid data={filteredPosts} />
+        <LightboxManager client:load />
+      </section>
+      <button id="back-to-top" class="fixed bottom-10 right-14 p-4 transition-all duration-300 opacity-0 translate-y-2 invisible animate-bounce" aria-label="Back to top">
+        <img src="/img/arrow-upRed.png" alt="Flecha subir" class="w-14 h-14"/>
+      </button>
+    </main>
+    <script type="module" src="/backToTop.js"></script>
+  </body>
+</html>

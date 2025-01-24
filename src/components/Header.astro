@@ -1,0 +1,35 @@
+---
+import Nav from './Nav.astro';
+import SearchBar from './SearchBar.astro';
+import '../styles/global.css';
+const { postsData } = Astro.props;
+---
+
+<div class="fixed top-0 left-0 h-screen w-1/3 bg-cover bg-center bg-transparent">
+  <div class="flex flex-col justify-between h-full">
+    <div class="w-full">
+      <Nav />
+      <SearchBar />
+    </div>
+   
+    <!-- Logo ligeramente por encima del centro del viewport -->
+    <div class="relative flex items-end pr-2 space-y-4" style="top: -23%; left: 16%;">
+      <h1 class="text-right text-3xl font-bold">
+        <span class="font-mallows text-amber-300 text-8xl">Martina's</span>
+        <span class="font-simplicity text-stone-50 text-8xl">Blog</span>
+      </h1>
+      <div class="flex justify-end">
+        <img src="/img/author.png" alt="Logo" class="w-56 h-56 " />
+      </div>
+    </div>
+
+    <!-- Social Icons -->
+    <div class="flex justify-center space-x-4 mb-6 w-3/4 ml-6">
+      <img src="/img/icons8-twitter-96.png" alt="Twitter" class="w-8 h-8 hover:scale-110 transition-transform cursor-pointer" />
+      <img src="/img/icons8-facebook-96.png" alt="Facebook" class="w-8 h-8 hover:scale-110 transition-transform cursor-pointer" />
+      <img src="/img/icons8-instagram-96.png" alt="Instagram" class="w-8 h-8 hover:scale-110 transition-transform cursor-pointer" />
+      <img src="/img/icons8-tiktok-96.png" alt="TikTok" class="w-8 h-8 hover:scale-110 transition-transform cursor-pointer" />
+      <img src="/img/icons8-youtube-96.png" alt="YouTube" class="w-8 h-8 hover:scale-110 transition-transform cursor-pointer" />
+    </div>
+  </div>
+</div>

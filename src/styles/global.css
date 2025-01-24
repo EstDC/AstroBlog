@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*fuentes personalizadas */
+@font-face {
+    font-family: 'Simplicity';
+    src: url('/fonts/Simplicity.otf') format('opentype'); 
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Mallows';
+    src: url('/fonts/Mallows.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+  }

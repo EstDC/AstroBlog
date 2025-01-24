@@ -1,0 +1,106 @@
+---
+interface PostProps {
+  id: string;
+  slug: string;
+  image: string;
+  title: string;
+  description: string;
+  content: string;
+  author: string;
+  date: string;
+  likes: number;
+  section: string;
+}
+
+const post = Astro.props as PostProps;
+---
+
+<article class="p-6 bg-white bg-opacity-90 rounded-md shadow-lg max-w-2xl mx-auto my-8">
+  <header>
+    <h1 class="text-8xl font-bold mb-10 font-simplicity text-end">{post.title}</h1>
+    <p class="text-sm text-gray-500 font-Helvetica">Por {post.author} | {post.date}</p>
+  </header>
+  <figure class="my-4">
+    <img 
+      src={post.image} 
+      alt={post.title} 
+      class="w-full h-auto object-cover rounded"
+    />
+    <figcaption class=" text-gray-600 mt-4 italic text-end font-Helvetica">{post.description}</figcaption>
+  </figure>
+  <section class="prose prose-sm max-w-none text-gray-800 mt-10 font-Helvetica whitespace-pre-wrap /*detecta los saltos de línea*/ text-justify">
+    <p>{post.content}</p>
+  </section>
+  <section class="flex justify-between mt-8">
+    <button id={`like-btn-${post.id}`} data-post-id={post.id} class="flex items-center text-gray-600 hover:text-gray-800 font-simplicity font-extrabold text-3xl">
+      <img src="/img/favorito.png" alt="Like" class="w-10 h-10 inline-block ml-2 mr-4">
+      Likes:<span id={`like-count-${post.id}`}>{post.likes}</span>
+    </button>
+    <p class="text-gray-600 justify-end">Sección: {post.section}</p>
+  </section>
+</article>
+<!-- Script para manejar los likes -->
+<script type="module" is="module">
+  async function updateLikes(postId) {
+    const BASE_URL = 'https://astrobloggastro-default-rtdb.europe-west1.firebasedatabase.app';
+    
+    // Convertir postId a índice (asumiendo que postId comienza en "1")
+    const index = Number(postId) - 1;
+    if (isNaN(index) || index < 0) {
+      console.error(`postId inválido: ${postId}`);
+      return null;
+    }
+
+    const url = `${BASE_URL}/posts/${index}/likes.json`;
+
+    try {
+      // Obtener el número actual de likes
+      const resp = await fetch(url);
+      if (!resp.ok) throw new Error('Error al obtener los likes');
+      const currentLikesRaw = await resp.json();
+      console.log(`Likes actuales para el post ${postId}:`, currentLikesRaw);
+
+      // Manejar casos donde currentLikesRaw es null o undefined
+      const currentLikes = Number(currentLikesRaw ?? 0);
+      const newLikes = currentLikes + 1;
+      console.log(`Actualizando likes a: ${newLikes}`);
+
+      // Actualizar en Firebase usando PUT
+      const updateResp = await fetch(url, {
+        method: 'PUT', // Usar PUT para establecer el valor directamente
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newLikes) // Enviar el número directamente
+      });
+
+      if (!updateResp.ok) throw new Error('Error al actualizar los likes');
+
+      console.log(`Likes actualizados para el post ${postId}:`, newLikes);
+      const likeCountSpan = document.getElementById(`like-count-${postId}`);
+      if (likeCountSpan) {
+        likeCountSpan.textContent = newLikes;
+      }
+    } catch (error) {
+      console.error(`Error al actualizar los likes para el post ${postId}:`, error);
+    }
+  }
+
+  // Escuchar clics en botones de likes
+  document.addEventListener('click', async (e) => {
+    const target = e.target.closest('button[id^="like-btn-"]');
+    if (!target) return;
+
+    const postId = target.dataset.postId;
+    if (!postId) return;
+
+    // Actualizar likes en Firebase
+    const updatedLikes = await updateLikes(postId);
+
+    if (updatedLikes !== null) {
+      // Actualizar el contador en la interfaz
+      const likeCountSpan = document.getElementById(`like-count-${postId}`);
+      if (likeCountSpan) {
+        likeCountSpan.textContent = updatedLikes;
+      }
+    }
+  });
+</script>
