@@ -49,7 +49,7 @@
       }
     }
   }); */
-
+/* 
   async function updateLikes(postId){
     const BASE_URL = 'https://astrobloggastro-default-rtdb.europe-west1.firebasedatabase.app';
   
@@ -89,4 +89,46 @@
       console.error(`Error al actualizar los likes para el post ${postId}:`, error);
       return null;
     }
+  } */
+
+    
+async function updateLikes(postId) {
+  const BASE_URL = 'https://astrobloggastro-default-rtdb.europe-west1.firebasedatabase.app';
+
+  if (!postId) {
+    console.error(`postId inválido: ${postId}`);
+    return null;
   }
+
+  const url = `${BASE_URL}/posts/${postId}/likes.json`;
+
+  try {
+    // Obtener el número actual de likes
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error('Error al obtener los likes');
+    const currentLikesRaw = await resp.json();
+    console.log(`Likes actuales para el post ${postId}:`, currentLikesRaw);
+
+    // Manejar casos donde currentLikesRaw es null o undefined
+    const currentLikes = Number(currentLikesRaw ?? 0);
+    const newLikes = currentLikes + 1;
+    console.log(`Actualizando likes a: ${newLikes}`);
+
+    // Actualizar en Firebase usando PATCH para mayor flexibilidad
+    const updateResp = await fetch(`${BASE_URL}/posts/${postId}.json`, {
+      method: 'PATCH', // Usar PATCH para actualizar solo el campo 'likes'
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ likes: newLikes }) // Enviar el objeto con el campo a actualizar
+    });
+
+    if (!updateResp.ok) throw new Error('Error al actualizar los likes');
+
+    console.log(`Likes actualizados para el post ${postId}:`, newLikes);
+    return newLikes;
+  } catch (error) {
+    console.error(`Error al actualizar los likes para el post ${postId}:`, error);
+    return null;
+  }
+}
+
+export { updateLikes };
