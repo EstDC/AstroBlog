@@ -1,4 +1,4 @@
-const BASE_URL = 'https://astrobloggastro-default-rtdb.europe-west1.firebasedatabase.app';
+export const BASE_URL = 'https://astrobloggastro-default-rtdb.europe-west1.firebasedatabase.app';
 
 /**
  * Fetch posts from Firebase Realtime Database

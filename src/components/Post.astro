@@ -1,5 +1,7 @@
 ---
 title: "Post"
+
+import ReactLikeButton from '../components/updateLikes.jsx';
 interface PostProps {
   id: string;
   slug: string;
@@ -33,15 +35,18 @@ const post = Astro.props as PostProps;
     <p>{post.content}</p>
   </section>
   <section class="flex justify-between mt-8">
-    <button id={`like-btn-${post.id}`} data-post-id={post.id} class="flex items-center text-gray-600 hover:text-gray-800 font-simplicity font-extrabold text-3xl">
+    <ReactLikeButton client:load postId={post.id} initialLikes={post.likes}/>
+<!--     <button id={`like-btn-${post.id}`} data-post-id={post.id} class="flex items-center text-gray-600 hover:text-gray-800 font-simplicity font-extrabold text-3xl">
       <img src="/img/favorito.png" alt="Like" class="w-10 h-10 inline-block ml-2 mr-4">
       Likes:<span id={`like-count-${post.id}`}>{post.likes}</span>
-    </button>
+    </button> -->
     <p class="text-gray-600 justify-end">Sección: {post.section}</p>
   </section>
 </article>
+
+
 <!-- Script para manejar los likes POR AHORA LO DEJO HASTA QUE HAGA EL COMPONENTE REACT PARA LOS LIKES-->
- <script type="module" is="module">
+<!--  <script type="module" is="module">
   async function updateLikes(postId) {
     const BASE_URL = 'https://astrobloggastro-default-rtdb.europe-west1.firebasedatabase.app';
     
@@ -104,4 +109,4 @@ const post = Astro.props as PostProps;
       }
     }
   });
-</script>
+</script> -->
