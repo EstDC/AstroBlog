@@ -43,7 +43,7 @@ function LikeButton({ postId, initialLikes }) {
   return (
     <section className="flex justify-between mt-8">
       <button onClick={updateLikes} className="flex items-center text-gray-600 hover:text-gray-800 font-simplicity font-extrabold text-3xl">
-        <img src="img/favorito.png" alt="Like" className="w-10 h-10 inline-block ml-2 mr-4"/>
+        <img src="img/estrella.png" className="w-10 h-10 inline-block ml-2 mr-4"/>
         Likes: <span className="ml-2">{likes}</span>
       </button>
     </section>
